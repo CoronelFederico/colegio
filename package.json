@@ -9,6 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@heroui/react": "^3.2.6",
+    "@heroui/styles": "^3.2.6",
+    "altcha": "^3.3.0",
     "firebase": "^12.19.0",
     "git": "^0.1.5",
     "jspdf": "^4.2.1",
@@ -21,6 +24,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "daisyui": "^5.7.47",
     "eslint": "^9",
     "eslint-config-next": "16.3.7",
     "tailwindcss": "^4"

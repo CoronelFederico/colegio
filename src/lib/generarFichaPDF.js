@@ -3,7 +3,8 @@ import QRCode from "qrcode";
 
 export async function generarFichaPDF(datosAlumno, checklist) {
   const doc = new jsPDF();
-  const urlValidacion = `https://portal-virgilioferreyra.edu.ar/familia?dni=${datosAlumno.dni}`;
+  const baseUrl = typeof window !== "undefined" ? window.location.origin : "https://portal-virgilioferreyra.edu.ar";
+  const urlValidacion = `${baseUrl}/dashboard?seccion=portal_familia&dni=${datosAlumno.dni}`;
 
   // 1. Código QR
   let qrDataUrl = "";
