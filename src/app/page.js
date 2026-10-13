@@ -298,7 +298,7 @@ export default function HomePage() {
                   
               <li><a>Tutorial</a></li>
               <li>
-                <button 
+                <button id="btn-reseña"
                   onClick={() => document.getElementById('historia_modal').showModal()}
                   className="hover:text-blue-900 hover:bg-blue-50 rounded-lg text-left w-full cursor-pointer py-2 px-3"
                 >
@@ -788,9 +788,9 @@ export default function HomePage() {
               </p>
               <ul className="space-y-2 text-slate-400 font-medium">
                 <li><a href="#" className="hover:text-blue-400 transition-colors">• Inicio</a></li>
-                <li><a href="#radioescolar" className="hover:text-blue-400 transition-colors">• Radio Escolar</a></li>
-                <li><a href="#contacto" className="hover:text-blue-400 transition-colors">• Tutorial de Uso</a></li>
-                <li><a href="#contacto" className="hover:text-blue-400 transition-colors">• Reseña Histórica</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">• Radio Escolar</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">• Tutorial de Uso</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">• Reseña Histórica</a></li>
                 <li><a href="#contacto" className="hover:text-blue-400 transition-colors">• Contacto e Informes</a></li>
               </ul>
             </div>
