@@ -9,7 +9,6 @@ import Link from "next/link";
 
 // Importación de Módulos Separados
 import VistaGeneral from "@/components/admin/VistaGeneral";
-import CrearUsuario from "@/components/admin/CrearUsuario";
 import ListaAlumnos from "@/components/admin/ListaAlumnos";
 import Preceptoria from "@/components/admin/Preceptoria";
 import Biblioteca from "@/components/admin/Biblioteca";
