@@ -824,7 +824,7 @@ export default function HomePage() {
               </p>
               <div className="flex gap-3 pt-2">
                 <a
-                  href="https://www.instagram.com"
+                  href="https://www.instagram.com/colpvcf/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-gradient-to-tr hover:from-amber-500 hover:via-rose-500 hover:to-purple-600 hover:border-transparent transition-all shadow-md hover:scale-105"
@@ -835,7 +835,7 @@ export default function HomePage() {
                   </svg>
                 </a>
                 <a
-                  href="https://www.facebook.com"
+                  href="https://www.facebook.com/cspvcf/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-blue-600 hover:border-transparent transition-all shadow-md hover:scale-105"
@@ -846,7 +846,7 @@ export default function HomePage() {
                   </svg>
                 </a>
                 <a
-                  href="https://wa.me/5493804202030"
+                  //href="https://wa.me/5493827401840"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-emerald-600 hover:border-transparent transition-all shadow-md hover:scale-105"
