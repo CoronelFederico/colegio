@@ -5,6 +5,7 @@ import { collection, query, where, getDocs, updateDoc } from "firebase/firestore
 import { db } from "@/lib/firebase";
 import { generarPDFSinide } from "@/lib/generarFichaPDFSinide";
 import { generarFichaPDF } from "@/lib/generarFichaPDF";
+import { enviarNotificacionWhatsApp } from "@/lib/enviarPdfPortal";
 
 const CHECKLIST_INICIAL = {
   fotocopiaDniAlumno: false,
@@ -95,6 +96,7 @@ export default function FormularioPortalFamilia({ usuario, dniUsuarioLogueado })
     aceptaTerminos: false,
   });
 
+  const [telefonoEnvioWp, setTelefonoEnvioWp] = useState("");
   const [checklist, setChecklist] = useState(CHECKLIST_INICIAL);
   const [fichaInscripcionLista, setFichaInscripcionLista] = useState(false);
 
@@ -165,6 +167,9 @@ export default function FormularioPortalFamilia({ usuario, dniUsuarioLogueado })
           setFichaInscripcionLista(fichaLista);
           setChecklist({ ...CHECKLIST_INICIAL, ...docInscripcion });
 
+          const telTutorCargado = dataDoc.tutor?.telefono || "";
+          setTelefonoEnvioWp(limpiarSoloNumeros(telTutorCargado));
+
           setFormData({
             dni: dniLimpio,
             apellido: dataDoc.apellido || "",
@@ -198,7 +203,7 @@ export default function FormularioPortalFamilia({ usuario, dniUsuarioLogueado })
             tutorNivelEducativo: dataDoc.tutor?.nivelEducativo || "Secundario completo",
             tutorOcupacion: dataDoc.tutor?.ocupacion || "",
             puedeRetirar: dataDoc.tutor?.puedeRetirar || "SI",
-            tutorTelefono: limpiarSoloNumeros(dataDoc.tutor?.telefono || ""),
+            tutorTelefono: limpiarSoloNumeros(telTutorCargado),
             recibeWhatsapp: dataDoc.tutor?.recibeWhatsapp || "SI",
             tutorEmail: (dataDoc.tutor?.email || "").toLowerCase().trim(),
             discapacidad: dataDoc.inclusion?.discapacidad || "No",
@@ -307,7 +312,7 @@ export default function FormularioPortalFamilia({ usuario, dniUsuarioLogueado })
     }
   };
 
-  // 📄 Descarga PDF SInIDE (Comprobante Validado)
+  // 📄 Descarga PDF SInIDE
   const handleDescargarPDFSinide = async () => {
     try {
       const datosAlumnoParaPDF = {
@@ -323,7 +328,7 @@ export default function FormularioPortalFamilia({ usuario, dniUsuarioLogueado })
     }
   };
 
-  // 📁 Descarga Ficha de Inscripción (Checklist y Solicitud)
+  // 📁 Descarga Ficha de Inscripción
   const handleDescargarFichaInscripcion = async () => {
     try {
       const datosAlumnoParaFicha = {
@@ -339,6 +344,43 @@ export default function FormularioPortalFamilia({ usuario, dniUsuarioLogueado })
     } catch (err) {
       console.error("❌ Error al generar Ficha de Inscripción:", err);
       alert(`⚠️ Hubo un error al generar la ficha de inscripción: ${err.message || err}`);
+    }
+  };
+
+  // 🚀 Generar Ambos PDFs y Enviar por WhatsApp
+  const handleGenerarAmbosYEnviarWp = async () => {
+    try {
+      // 1. Generar PDF SInIDE
+      const datosAlumnoParaPDF = {
+        ...formData,
+        dni: formatearDNI(formData.dni || dniFijo),
+        cuil: formatearCUIL(formData.cuil),
+        tutorCuil: formatearCUIL(formData.tutorCuil),
+      };
+      await generarPDFSinide(datosAlumnoParaPDF);
+
+      // 2. Generar Ficha de Inscripción
+      const datosAlumnoParaFicha = {
+        ...formData,
+        dni: formatearDNI(formData.dni || dniFijo),
+        dniTutor: formatearCUIL(formData.tutorCUIL || formData.tutorCuil),
+        nombreTutor: `${formData.tutorApellido}, ${formData.tutorNombre}`,
+        domicilio: `${formData.domicilioCalleNumero}, ${formData.domicilioBarrio}`,
+        telefono: formData.tutorTelefono,
+        correoTutor: formData.tutorEmail,
+      };
+      await generarFichaPDF(datosAlumnoParaFicha, checklist);
+
+      // 3. Enviar notificación por WhatsApp
+      const nombreCompleto = `${formData.apellido}, ${formData.nombre}`;
+      enviarNotificacionWhatsApp(
+        telefonoEnvioWp, 
+        nombreCompleto, 
+        "Legajo SInIDE Digital y Ficha de Inscripción"
+      );
+    } catch (err) {
+      console.error("❌ Error al generar/enviar documentación:", err);
+      alert(`⚠️ Hubo un error: ${err.message || err}`);
     }
   };
 
@@ -721,11 +763,11 @@ export default function FormularioPortalFamilia({ usuario, dniUsuarioLogueado })
 
                       <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl space-y-3">
                         <p className="text-[11px] text-amber-800 leading-relaxed">
-                          Al marcar esta casilla, declaro bajo juramento que soy el tutor/a legal o responsable registrado del estudiante. Confirmo que todos los datos consignados en este formulario son exactos, veraces y actualizados[cite: 15].
+                          Al marcar esta casilla, declaro bajo juramento que soy el tutor/a legal o responsable registrado del estudiante. Confirmo que todos los datos consignados en este formulario son exactos, veraces y actualizados.
                         </p>
                         <label className="flex items-center gap-2 cursor-pointer">
                           <input type="checkbox" checked={formData.aceptaTerminos} onChange={(e) => setFormData({ ...formData, aceptaTerminos: e.target.checked })} className="w-4 h-4 text-blue-600 rounded" />
-                          <span className="text-xs font-bold text-amber-950">ACEPTO Y DECLARO BAJO JURAMENTO LOS DATOS (SInIDE)[cite: 15]</span>
+                          <span className="text-xs font-bold text-amber-950">ACEPTO Y DECLARO BAJO JURAMENTO LOS DATOS (SInIDE)</span>
                         </label>
                       </div>
 
@@ -741,6 +783,34 @@ export default function FormularioPortalFamilia({ usuario, dniUsuarioLogueado })
               )}
             </div>
           )}
+
+          {/* SECCIÓN ENVÍO POR WHATSAPP DE AMBOS PDF */}
+          <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 mt-4">
+            <h4 className="font-bold text-xs text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
+              <span>💬</span> Generar Ambos PDFs & Enviar por WhatsApp
+            </h4>
+            <p className="text-[11px] text-slate-500">
+              Ingresá el número de celular del contacto para generar y enviar la notificación de la documentación completa:
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-2">
+              <input
+                type="tel"
+                placeholder="Ej: 3804202030 (con característica)"
+                value={telefonoEnvioWp}
+                onChange={(e) => setTelefonoEnvioWp(e.target.value)}
+                className="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              />
+              
+              <button
+                type="button"
+                onClick={handleGenerarAmbosYEnviarWp}
+                className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>📤 Generar y Enviar por WhatsApp</span>
+              </button>
+            </div>
+          </div>
 
           {pestanaActiva === "inscripcion" && (
             <div className="space-y-4 py-2">
