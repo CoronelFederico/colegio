@@ -13,6 +13,7 @@ import ListaAlumnos from "@/components/admin/ListaAlumnos";
 import Preceptoria from "@/components/admin/Preceptoria";
 import SolicitudesClave from "@/components/admin/SolicitudesClave";
 import Biblioteca from "@/components/admin/Biblioteca";
+import ConfiguracionInstitucional from "@/components/admin/ConfiguracionInstitucional"; // 👈 Importado correctamente aquí
 
 import ControlDocenteYNovedades from "@/components/secretaria/ControlDocenteYNovedades";
 import GestionCorreos from "@/components/secretaria/GestionCorreos";
@@ -32,6 +33,10 @@ export default function DashboardPage() {
   const [solicitudesBlanqueo, setSolicitudesBlanqueo] = useState([]);
   const [libros, setLibros] = useState([]);
   const [prestamos, setPrestamos] = useState([]);
+
+  // Estados de la radio (AHORA SÍ DENTRO DEL COMPONENTE)
+  const [radioEnVivo, setRadioEnVivo] = useState(false);
+  const [urlStreamRadio, setUrlStreamRadio] = useState("");
 
   const router = useRouter();
 
@@ -112,7 +117,7 @@ export default function DashboardPage() {
     );
   }
 
-const cerrarSesion = () => {
+  const cerrarSesion = () => {
     localStorage.removeItem("usuario_sesion");
     localStorage.removeItem("dni"); 
     router.push("/");
@@ -214,6 +219,12 @@ const cerrarSesion = () => {
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${seccionActiva === "solicitudes_clave" ? "bg-[#1e295d] text-white shadow-sm" : "text-slate-600 hover:bg-slate-100"}`}
                 >
                   🔑 Solicitudes Clave ({solicitudesBlanqueo.length})
+                </button>
+                <button 
+                  onClick={() => setSeccionActiva("configuracion")}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${seccionActiva === "configuracion" ? "bg-[#1e295d] text-white shadow-sm" : "text-slate-600 hover:bg-slate-100"}`}
+                >
+                  📻 Radio & Contacto
                 </button>
               </>
             )}
@@ -318,6 +329,9 @@ const cerrarSesion = () => {
                 )}
                 {seccionActiva === "biblioteca" && (
                   <Biblioteca libros={libros} prestamos={prestamos} onUpdate={cargarDatosFirebase} />
+                )}
+                {seccionActiva === "configuracion" && (
+                  <ConfiguracionInstitucional />
                 )}
 
                 {seccionActiva === "control_docente" && <ControlDocenteYNovedades />}
