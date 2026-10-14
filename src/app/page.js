@@ -384,43 +384,47 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Contenido Principal con Animación de Tipeado */}
-      <main className="flex-1 flex flex-col items-center justify-center text-center px-4 sm:px-6 py-6 bg-gradient-to-b from-white to-slate-100 min-h-[calc(100vh-120px)]">
-        <div className="max-w-3xl w-full space-y-4 my-auto flex flex-col items-center">
-          
-          <h1 className="text-xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-snug w-full px-2 break-words text-center flex flex-col items-center">
+ {/* Contenido Principal con Espaciado y Centrado Perfecto */}
+    <section className="flex-1 flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-24 sm:pt-32 pb-16 bg-gradient-to-b from-white to-slate-100 min-h-[calc(100vh-80px)]">
+      <div className="max-w-3xl w-full mx-auto space-y-6 flex flex-col items-center justify-center">
+        
+        <div className="w-full text-center">
+          <h1 className="text-xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-snug px-2">
             <TextoTipeado texto="Portal Escolar de Gestión Educativa" />
           </h1>
+        </div>
 
-          <p className="text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed max-w-lg mx-auto font-normal px-4 break-words text-center flex flex-col items-center">
+        <div className="w-full max-w-xl text-center">
+          <p className="text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed font-normal px-2">
             <TextoTipeado 
-              texto="Sistema integrado para el seguimiento académico, control de asistencias, boletines y legajos escolares en tiempo real." 
+              texto="Sistema integrado para el seguimiento académico en tiempo real." 
               delay={0.8} 
             />
           </p>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.8, duration: 0.6 }}
-            className="pt-2 flex flex-col sm:flex-row justify-center items-center gap-3 w-full px-4"
-          >
-            <button 
-              onClick={() => document.getElementById('login_modal').showModal()}
-              className="btn bg-[#23b3e8] hover:bg-[#1da2d3] border-none text-white font-bold text-xs uppercase tracking-wider w-full sm:w-auto px-6 h-11 rounded-full shadow-lg shadow-cyan-500/20"
-            >
-              Iniciar Sesión en el Portal
-            </button>
-            <a 
-              href="#destinado" 
-              className="btn btn-outline border-slate-300 text-slate-700 hover:bg-slate-100 font-bold text-xs uppercase tracking-wider w-full sm:w-auto px-6 h-11 rounded-full flex items-center justify-center"
-            >
-              Saber Más
-            </a>
-          </motion.div>
-
         </div>
-      </main>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.8, duration: 0.6 }}
+          className="pt-2 flex flex-col sm:flex-row justify-center items-center gap-3 w-full px-4"
+        >
+          <button 
+            onClick={() => document.getElementById('login_modal').showModal()}
+            className="btn bg-[#23b3e8] hover:bg-[#1da2d3] border-none text-white font-bold text-xs uppercase tracking-wider w-full sm:w-auto px-6 h-11 rounded-full shadow-lg shadow-cyan-500/20"
+          >
+            Iniciar Sesión en el Portal
+          </button>
+          <a 
+            href="#destinado" 
+            className="btn btn-outline border-slate-300 text-slate-700 hover:bg-slate-100 font-bold text-xs uppercase tracking-wider w-full sm:w-auto px-6 h-11 rounded-full flex items-center justify-center"
+          >
+            Saber Más
+          </a>
+        </motion.div>
+
+      </div>
+    </section>
 
       {/* SECCIÓN: ¿A quién está destinado el portal? */}
       <section id="destinado" className="py-20 px-6 bg-slate-900 text-slate-100 border-t border-slate-800">

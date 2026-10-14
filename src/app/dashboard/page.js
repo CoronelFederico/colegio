@@ -12,7 +12,7 @@ import ListaAlumnos from "@/components/admin/ListaAlumnos";
 import Preceptoria from "@/components/admin/Preceptoria";
 import SolicitudesClave from "@/components/admin/SolicitudesClave";
 import Biblioteca from "@/components/admin/Biblioteca";
-import ConfiguracionInstitucional from "@/components/admin/ConfiguracionInstitucional"; // 👈 Importado correctamente aquí
+import ConfiguracionInstitucional from "@/components/admin/ConfiguracionInstitucional"; 
 
 import ControlDocenteYNovedades from "@/components/secretaria/ControlDocenteYNovedades";
 import GestionCorreos from "@/components/secretaria/GestionCorreos";
@@ -20,6 +20,7 @@ import InscripcionSecretaria from "@/components/secretaria/InscripcionSecretaria
 import LibroEntradaSalida from "@/components/secretaria/LibroEntradaSalida";
 
 import FormularioPortalFamilia from "@/components/familia/FormularioPortalFamilia";
+import SolicitudesBotPanel from "@/components/secretaria/SolicitudesBotPanel";
 
 export default function DashboardPage() {
   const [usuario, setUsuario] = useState(null);
@@ -219,6 +220,17 @@ export default function DashboardPage() {
                 >
                   📻 Radio & Contacto
                 </button>
+                {/* Opción Solicitudes del Bot */}
+<button
+  onClick={() => setSeccionActiva("solicitudes_bot")}
+  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${
+    seccionActiva === "solicitudes_bot"
+      ? "bg-blue-600 text-white shadow-md"
+      : "text-slate-600 hover:bg-slate-100"
+  }`}
+>
+  🤖 Solicitudes del Bot
+</button>
               </>
             )}
 
@@ -333,6 +345,7 @@ export default function DashboardPage() {
                 {seccionActiva === "gestion_correos" && <GestionCorreos />}
 
                 {seccionActiva === "portal_familia" && <FormularioPortalFamilia usuario={usuario} />}
+                {seccionActiva === "solicitudes_bot" && (<SolicitudesBotPanel />)}
               </>
             )}
 
