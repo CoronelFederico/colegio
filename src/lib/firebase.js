@@ -1,6 +1,7 @@
 // src/lib/firebase.js
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage"; // 👈 1. Importar getStorage
 
 // Configuración leída desde las variables de entorno
 const firebaseConfig = {
@@ -12,9 +13,9 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-
 // Inicializar Firebase
 export const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-// Instancia principal de Firestore para importar en toda la app
-export const db = getFirestore(app);
 
+// Instancias de los servicios
+export const db = getFirestore(app);
+export const storage = getStorage(app); // 👈 2. Exportar la instancia de storage
