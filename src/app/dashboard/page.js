@@ -13,6 +13,7 @@ import Preceptoria from "@/components/admin/Preceptoria";
 import SolicitudesClave from "@/components/admin/SolicitudesClave";
 import Biblioteca from "@/components/admin/Biblioteca";
 import ConfiguracionInstitucional from "@/components/admin/ConfiguracionInstitucional"; 
+import AuditorFirestore from "@/components/admin/AuditorFirestore"
 
 import ControlDocenteYNovedades from "@/components/secretaria/ControlDocenteYNovedades";
 import GestionCorreos from "@/components/secretaria/GestionCorreos";
@@ -196,6 +197,14 @@ export default function DashboardPage() {
                 >
                   📊 Vista General
                 </button>
+
+<button 
+  onClick={() => setSeccionActiva("auditor")}
+  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${seccionActiva === "auditor" ? "bg-[#1e295d] text-white shadow-sm" : "text-slate-600 hover:bg-slate-100"}`}
+>
+  🔍 Auditor Base de Datos
+</button>
+
                 <button 
                   onClick={() => setSeccionActiva("lista_alumnos")}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all ${seccionActiva === "lista_alumnos" ? "bg-[#1e295d] text-white shadow-sm" : "text-slate-600 hover:bg-slate-100"}`}
@@ -323,6 +332,9 @@ export default function DashboardPage() {
                 {seccionActiva === "crear_usuario" && (
                   <CrearUsuario cursosDisponibles={cursosDisponibles} onUsuarioCreado={cargarDatosFirebase} />
                 )}
+
+{seccionActiva === "auditor" && <AuditorFirestore />}
+
                 {seccionActiva === "lista_alumnos" && (
                   <ListaAlumnos usuarios={usuarios} onUpdate={cargarDatosFirebase} />
                 )}
